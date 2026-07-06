@@ -1,0 +1,161 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-display: var(--font-display-var);
+  --font-sans: var(--font-sans-var);
+}
+
+@theme {
+  /* Palette — warm night stone + aged gold + arrival cream */
+  --color-night: #0b0806;
+  --color-stone: #17110a;
+  --color-stone-hi: #241a0f;
+  --color-cream-deep: #fff2c9;
+  --color-cream: #f8f2e3;
+  --color-cream-dim: #efe4cb;
+  --color-ink: #221909;
+  --color-ink-soft: #6f5f43;
+  --color-gold: #b8933f;
+  --color-gold-bright: #e3c07e;
+}
+
+:root {
+  /* Motion DNA — one curve, everywhere */
+  --ease-1: cubic-bezier(0.76, 0, 0.24, 1);
+  --dur-micro: 0.25s;
+  --dur-fast: 0.45s;
+  --dur-base: 0.8s;
+  --dur-slow: 1.2s;
+
+  --line-dark: rgba(34, 25, 9, 0.16);
+  --line-light: rgba(255, 242, 201, 0.16);
+}
+
+html {
+  scroll-behavior: auto; /* Lenis owns smoothing */
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-night); /* animated per-section by BodyTheme */
+  color: var(--color-ink);
+  font-family: var(--font-sans-var), sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-night);
+}
+
+/* Film grain — depth over flat fills */
+body::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  z-index: 9990;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 250px;
+  opacity: 0.05;
+  animation: grain 9s steps(6) infinite;
+}
+
+@keyframes drop {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-6%, 4%); }
+  40% { transform: translate(4%, -7%); }
+  60% { transform: translate(-3%, -3%); }
+  80% { transform: translate(5%, 6%); }
+}
+
+/* Scrollbar — thin, quiet */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(184, 147, 63, 0.45); }
+
+/* Native cursor hidden where the custom one lives */
+@media (hover: hover) and (pointer: fine) {
+  body[data-cursor] * { cursor: none; }
+}
+
+/* Reveal primitives — every entrance uses the same language */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.08em;
+}
+.mask-line > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Label — numbered section eyebrow */
+.eyebrow {
+  font-family: var(--font-sans-var), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+/* Hairline that grows in */
+.rule {
+  height: 1px;
+  transform-origin: left center;
+}
+
+/* Nav link — sliding underline */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-1);
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Marquee — CSS only, pauses on hover */
+.marquee-track {
+  animation: marquee 26s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.9; }
+}
+
+/* Reduced motion — everything lands instantly */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
